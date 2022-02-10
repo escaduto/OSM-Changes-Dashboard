@@ -1,4 +1,4 @@
-# Interactive Applications via ipywidget for Downloading Historical Meteorological Data from RAWS</u>
+# Interactive Dashboard for Visualizing OSM Data Change</u>
 
 ## Table of Contents  
 - [Project Details](#project-details)   
