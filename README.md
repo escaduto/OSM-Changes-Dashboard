@@ -1,9 +1,8 @@
 # Interactive Applications via ipywidget for Downloading Historical Meteorological Data from RAWS</u>
 
 ## Table of Contents  
-- [Project Details](#project-details)  
-- [Setup](#setup)  
-- [Primary Packages & Tools](#primary-packages-&-tools) 
+- [Project Details](#project-details)   
+- [Primary Packages & Tools](#primary-packages) 
 - [Data Sources](#data-sources)   
 - [Walk-Through](#walk-through)  
     1. [Interactive Mapping & Selection](#(1)-interactive-mapping-&-selection)  
@@ -16,7 +15,7 @@ The main objective of this exercise is to create an alternative way to interacti
 
 The dashboard will mainly include the timeseries, quantifying the total count of features created, deleted, and modified within a set time interval. A table will highlight osm features with the most changes and edits done. Greater the changes within the a smaller time-frame, the higher chance this feature is important and/or should be flagged. The dashboard will also show any geometric changes and/or modifications to key-value pairs i.e. tags. 
 
-## Primary Packages & Tools
+## Primary Packages
 
 - ipyleaflet 
 - ipywidget
@@ -43,5 +42,5 @@ The initial tab allows for the user to specify a region on the ipyleaflet map us
 
 The final tab is the dashboard highlighting important features, change activity, and changes to geometry/tags through the use of tables, timeseries plots, and interactive maps.  
 
-<img src="docs/dashboard_example.png" alt="dashboard_example">
+<img src="figs/dashboard_example.png" alt="dashboard_example">
 
