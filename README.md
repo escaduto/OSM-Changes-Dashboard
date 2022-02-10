@@ -5,8 +5,8 @@
 - [Primary Packages & Tools](#primary-packages) 
 - [Data Sources](#data-sources)   
 - [Walk-Through](#walk-through)  
-    1. [Interactive Mapping & Selection](#(1)-interactive-mapping-&-selection)  
-    2. [Visualizing Weather Data](#(2)-visualizing-weather-data)   
+    1. [Interactive Mapping & Selection](#(1)-interactive-data-queryg)  
+    2. [OSM Data Dashboard](#(2)-osm-data-dashboard)   
 ___
 
 ## Project Details
@@ -31,7 +31,7 @@ OpenStreetMap
 
 ## Walk-Through
 
-## (1) Interactive Mapping & Data Download
+## (1) Interactive Data Query
 
 The initial tab allows for the user to specify a region on the ipyleaflet map using the Draw Control widgets to select OSM features in the AOI. The user can also select a start/end date range, hourly interval, and filename. 
 
