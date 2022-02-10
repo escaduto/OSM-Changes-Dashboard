@@ -11,9 +11,11 @@ ___
 
 ## Project Details
 
-The main objective of this exercise is to create an alternative way to interactively download osm data that highlights edits taken place between a specified time interval located within a region of interest (ROI). The ROI is determined by a user defined bounding box via the draw control tool available in the ipyleaflet package. The retrieval of the osm differenced data, using adiff from the Overpass API, is done in hourly intervals, also specific by the user. In this way we can visualize the change count for a particular day and for a particular osm feature. Lastly, the retrieved data will be visualized in a dashboard to best illustrate the changes based on temporal and spatial components. 
+The main objective of this exercise is to investigate and iteratively refine methods of creating a tool that is useful for navigating osm data changes. This will have an interactive component where users will be able to pre-define and specify a region of interest (ROI), time range, and time interval which will all then be used to query osm data changes via the Overpass API. 
 
-The dashboard will mainly include the timeseries, quantifying the total count of features created, deleted, and modified within a set time interval. A table will highlight osm features with the most changes and edits done. Greater the changes within the a smaller time-frame, the higher chance this feature is important and/or should be flagged. The dashboard will also show any geometric changes and/or modifications to key-value pairs i.e. tags. 
+Various interesting tools and packages will be used including ipyleaflet and ipywidget to enable an intuitive and comprehensive user experience. For example, the user defined ROI will be a bounding box created via the draw control tool available in the ipyleaflet package. The retrieval of the osm differenced data, using adiff from the Overpass API, is done at unique time interval (e.g. 12, 24, 72 hours), also specified by the user. In this way we can visualize the change count for a particular day and for a particular osm feature. Lastly, the retrieved data will be visualized in a dashboard to best illustrate the changes based on temporal and spatial components. 
+
+The dashboard will mainly include a timeseries, quantifying the total count of features created, deleted, and modified within a set time interval. A table will highlight osm features with the most changes and edits done. This is based on the assumption: greater the changes within the a smaller time-frame, the higher chance this feature is important and/or should be flagged. The dashboard will also show any geometric changes and/or modifications to key-value pairs i.e. tags based on individual osm id + types. 
 
 ## Primary Packages
 
