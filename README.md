@@ -19,8 +19,9 @@ The dashboard will mainly include the timeseries, quantifying the total count of
 
 - ipyleaflet 
 - ipywidget
-- requests, urllib3, re, beautifulsoup, json
+- requests, urllib3, xml.etree.ElementTree
 - numpy, panda, geopandas, shapely
+- matplotlib, seaborn 
 - jupyter notebook (ipynb) for displaying custom GUI 
 
 ## Data Sources

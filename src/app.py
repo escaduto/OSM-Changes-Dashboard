@@ -6,7 +6,6 @@ import xml.etree.ElementTree as ET
 import os
 import geopandas as gpd
 from pandas.io.json import json_normalize
-import requests
 from shapely.geometry import Point
 from shapely.geometry import Polygon
 from shapely.geometry import box
