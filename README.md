@@ -24,7 +24,7 @@ The dashboard will mainly include a timeseries, quantifying the total count of f
 - ipywidget
 - requests, urllib3, xml.etree.ElementTree
 - numpy, panda, geopandas, shapely
-- matplotlib, seaborn 
+- plotly, dtale, matplotlib, seaborn 
 - jupyter notebook (ipynb) for displaying custom GUI 
 
 ## Data Sources
@@ -38,15 +38,15 @@ OpenStreetMap
 
 The initial tab allows for the user to specify a region on the ipyleaflet map using the Draw Control widgets to select OSM features in the AOI. The user can also select a start/end date range, hourly interval, and filename. 
 
-<img src="figs/data_downloader.png" alt="data_downloader">
+<img src="figs/osm_change_downloader.png" alt="data_downloader">
 
 <br><br>
 
 ## (2) OSM Data Dashboard
 
-The this tab is the dashboard highlighting important features, change activity, and changes to geometry/tags through the use of tables, timeseries plots, and interactive maps.  
+This section will highlight the frequency of changes in OSM based on the collected timestamp.   
 
-<img src="figs/dashboard_example.png" alt="dashboard_example">
+<img src="figs/change_frequency.png" alt="dashboard_example">
 
 ## (3) OSM Geometry Edit
 
