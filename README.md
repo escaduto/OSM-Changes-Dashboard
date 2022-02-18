@@ -7,6 +7,7 @@
 - [Walk-Through](#walk-through)  
     1. [Interactive Mapping & Selection](#(1)-interactive-data-queryg)  
     2. [OSM Data Dashboard](#(2)-osm-data-dashboard)   
+    3. [OSM Geometry Edit](#(3)-osm-geometry-edit)   
 ___
 
 ## Project Details
@@ -43,7 +44,13 @@ The initial tab allows for the user to specify a region on the ipyleaflet map us
 
 ## (2) OSM Data Dashboard
 
-The final tab is the dashboard highlighting important features, change activity, and changes to geometry/tags through the use of tables, timeseries plots, and interactive maps.  
+The this tab is the dashboard highlighting important features, change activity, and changes to geometry/tags through the use of tables, timeseries plots, and interactive maps.  
 
 <img src="figs/dashboard_example.png" alt="dashboard_example">
+
+## (3) OSM Geometry Edit
+
+This interactive map will highlight the bounding boxes of geometry edits within the queried region. 
+
+<img src="figs/geom_edit.png" alt="geom_edit">
 

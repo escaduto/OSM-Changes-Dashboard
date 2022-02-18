@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 import datetime
 from os import listdir
 from os.path import isfile, join
+import plotly.express as px
 
 
 # get node ID, node coordinates (lat/lon), tags (key/value) 
@@ -233,38 +234,59 @@ def retrieve_DS_List(interval, start_yr, start_mnth, start_dt, end_yr, end_mnth,
     start_end_ds = list(zip(start_dt_list, end_dt_list))
     return start_end_ds 
 
-def is_geometryEdit(df, output_csv_name):   
-  is_geometry_edit = []
-  for i, row in df.iterrows():
-    osm_id = row['osm_id']
-    change_type = row['change_type']
-    osm_type = row['osm_type']
-    ds = row['end_ds']
-    df_complete = pd.read_csv(output_csv_name).drop(columns = ['Unnamed: 0'])
-    if change_type == 'modify':
-      old_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'old'))][:1].item()
-      new_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'new'))][:1].item()
-    elif change_type == 'create':
-      old_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'new'))][:1].item()
-      new_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'new'))][:1].item()
-    elif change_type == 'delete':
-      old_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'old'))][:1].item()
-      new_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'old'))][:1].item()
-    is_geometry_edit.append((change_type, osm_id, osm_type, ds, old_geom, new_geom, old_geom != new_geom))
-  return is_geometry_edit
+def is_geometryEdit(output_csv_name):   
+    is_geometry_edit = []
+    df_complete = pd.read_csv(os.path.join('../data', output_csv_name)).drop(columns = ['Unnamed: 0'])
+    df = df_complete.drop_duplicates(subset = ["change_type", "osm_id","osm_type", "end_ds"]).reset_index(drop=True).drop(columns = ['start_ds', 'tag_key', 'tag_value', 'history'])
+    for i, row in df.iterrows():
+        osm_id = row['osm_id']
+        change_type = row['change_type']
+        osm_type = row['osm_type']
+        ds = row['end_ds']
+        if change_type == 'modify':
+            old_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'old'))][:1].item()
+            new_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'new'))][:1].item()
+        elif change_type == 'create':
+            old_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'new'))][:1].item()
+            new_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'new'))][:1].item()
+        elif change_type == 'delete':
+            old_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'old'))][:1].item()
+            new_geom = df_complete['geometry'].loc[((df_complete['end_ds'] == ds) & (df_complete['osm_id'] == osm_id) & (df_complete['history'] == 'old'))][:1].item()
+        is_geometry_edit.append((change_type, osm_id, osm_type, ds, old_geom, new_geom, old_geom != new_geom))
+
+    geom_df = pd.DataFrame(is_geometry_edit, columns =['change_type', 'osm_id', 'osm_type', 'end_ds', 'old_geom', 'new_geom', 'is_geometry_edit'])
+    return geom_df
 
 def getHistPlot(output_csv_name, plot_name):
     df_complete = pd.read_csv(output_csv_name).drop(columns = ['Unnamed: 0'])
     df_unique = df_complete.drop_duplicates(subset = ["change_type", "osm_id","osm_type", "end_ds"]).reset_index(drop=True).drop(columns = ['start_ds', 'tag_key', 'tag_value', 'history'])
     df_byDay = df_unique.groupby(["end_ds", "change_type"])['osm_id'].count().reset_index(name='count')
+    df_byDay_osmType = df_unique.groupby(["end_ds", "osm_type"])['osm_id'].count().reset_index(name='count')
+    df_byDay_osmType['end_ds'] = pd.to_datetime(df_byDay_osmType['end_ds']).dt.date
     df_byDay['end_ds'] = pd.to_datetime(df_byDay['end_ds']).dt.date
-    sns.barplot(x = "end_ds", y = "count", hue="change_type", data = df_byDay)
-    plt.ylabel("Count")
-    plt.xlabel("Date Stamp")
-    plt.xticks(rotation = 90)
-    plt.title("Timeseries of OSM Changeset Counts")
-    plt.savefig(os.path.join('../figs', plot_name), dpi=400, bbox_inches = "tight")
-    plt.close()
+
+    fig = px.bar(df_byDay, x = "end_ds", y = "count", color = 'change_type')
+    fig.show
+
+    # fig, ax1 = plt.subplots(figsize=(8,6))
+
+    # sns.lineplot(data=df_byDay_osmType, x="end_ds", y="count", hue="osm_type", marker='o', sort = False, ax=ax1)
+
+    # ax1.set_xlabel("Date Stamp",fontsize=14)
+    # ax1.set_ylabel("# of Change Type",color="red",fontsize=14)
+
+    # ax2 = ax1.twinx()
+
+    # sns.barplot(x = "end_ds", y = "count", hue="change_type", alpha=0.5, data = df_byDay, ax=ax2)
+
+    # ax2.set_ylabel("# of OSM Type",color="blue",fontsize=14)
+
+    # plt.title("Timeseries of OSM Changeset Counts")
+
+    # fig.savefig(os.path.join('../figs', plot_name), dpi=400, bbox_inches = "tight")
+
+    # plt.close()
+
 
 # count by osm id 
 def osmIDCounter(output_csv_name):
@@ -342,6 +364,19 @@ def createMap(map_center, map_zoom, draw_control):
     m.layout.height='600'
     return m 
 
+
+def createMapDiff(map_center, map_zoom, draw_control):
+    terrain_base = basemap_to_tiles(basemaps.Stamen.Toner)
+
+    m = Map(layers=(terrain_base, ), center=map_center, zoom=map_zoom)
+
+    draw_control.on_draw(handle_draw)
+
+    m.add_control(draw_control)
+    m.layout.width='auto'
+    m.layout.height='600'
+    return m 
+
 def get_files(mypath):
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     return onlyfiles
@@ -349,32 +384,7 @@ def get_files(mypath):
 
 
 
-def work(progress_search):
-    Complete_msg.value = ""
-    total = 100
-    for i in range(total):
-        time.sleep(0.3)
-        progress_search.value = float(i+1)/total
-    Complete_msg.value = f"<h4 style='color:MediumSeaGreen;'> Complete! </h4>"
 
-def callback(wdgt):
-    thread = threading.Thread(target=work, args=(progress_search,))
-    display(progress_search)
-    thread.start()
-    retrieveOSMDATA(hourly_slider.value, start_dt.value, end_dt.value, input_filename.value, bbox_coord.value)
-    
-def updateBBOX(wdgt):
-  if len(feature_collection['features']) != 0: 
-    coord_list = feature_collection['features'][0]['geometry']['coordinates'][0]
-    minlon = coord_list[0][1]
-    minlat = coord_list[0][0]
-    maxlon = coord_list[1][1]
-    maxlat = coord_list[2][0]
-    bbox_tuple = (minlon, minlat, maxlon, maxlat)
-    # bbox value 
-    bbox_coord.value = str(bbox_tuple)
-  else: 
-    pass 
 
 
     
