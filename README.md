@@ -8,6 +8,7 @@
     1. [Interactive Mapping & Selection](#(1)-interactive-data-queryg)  
     2. [OSM Data Dashboard](#(2)-osm-data-dashboard)   
     3. [OSM Geometry Edit](#(3)-osm-geometry-edit)   
+    4. [Alternative with DASH](#(4)-alternative-with-dash)   
 ___
 
 ## Project Details
@@ -53,4 +54,13 @@ This section will highlight the frequency of changes in OSM based on the collect
 This interactive map will highlight the bounding boxes of geometry edits within the queried region. 
 
 <img src="figs/geom_edit.png" alt="geom_edit">
+
+<br><br>
+
+## (4) Alternate Dashboard with DASH 
+
+Tools just for the use in an ipython notebook environment is not ideal so an alternative method is to create the dashboard straight into Dash. This way, we can 
+deploy in a web environment instead. 
+
+<img src="figs/dash_plotly.png" alt="dash_plotly">
 

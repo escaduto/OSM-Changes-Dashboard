@@ -1,7 +1,30 @@
 from ipyleaflet import Map, WKTLayer, MarkerCluster, basemaps, basemap_to_tiles
 from geomEdits import getGeomTrueDF 
 from tab1_main import map_coord, map_zoom 
+import shapely.wkt
 
+
+def getPolygon(output_csv_name, col_var): 
+    # returns 
+    geom_list = [] 
+    geom_df = getGeomTrueDF(output_csv_name).reset_index(drop=True)
+    for i, row in geom_df.iterrows():
+        if 'POLYGON' in row[col_var]:
+            shapelyObject = shapely.wkt.loads(row[col_var])
+            coords = list(shapelyObject.exterior.coords)
+            geom_list.append(coords)
+    return geom_list
+
+def getPoints(output_csv_name, col_var): 
+    geom_list = [] 
+    geom_df = getGeomTrueDF(output_csv_name).reset_index(drop=True)
+    for i, row in geom_df.iterrows():
+        if 'POINT' in row[col_var]:
+            shapelyObject = shapely.wkt.loads(row[col_var])
+            coords = list(shapelyObject.coords)
+            geom_list.append(coords)
+
+        
 
 def createGeomEditMap(output_csv_name):
     terrain_base = basemap_to_tiles(basemaps.Stamen.Toner)
